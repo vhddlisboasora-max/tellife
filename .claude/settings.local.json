@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(New-Item -ItemType Directory -Path \"C:\\\\Users\\\\vhddl\\\\Desktop\\\\telllife2\" -Force)",
+      "Bash(vercel --version)",
+      "Bash(npm --version)"
+    ]
+  }
+}
