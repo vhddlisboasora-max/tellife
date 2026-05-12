@@ -92,7 +92,7 @@
 
   // Form submit via Formspree
   // CONFIGURAÇÃO: crie uma conta em formspree.io, crie um formulário e cole o endpoint abaixo
-  const FORMSPREE = 'https://formspree.io/f/SEU_ID_AQUI';
+  const FORMSPREE = 'https://formspree.io/f/mrejjpzg';
   const form = document.getElementById('contactForm');
   if (form) {
     form.addEventListener('submit', async (e) => {
