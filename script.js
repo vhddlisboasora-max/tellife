@@ -90,9 +90,9 @@
     });
   })();
 
-  // Form submit via Formspree
-  // CONFIGURAÇÃO: crie uma conta em formspree.io, crie um formulário e cole o endpoint abaixo
-  const FORMSPREE = 'https://formspree.io/f/mrejjpzg';
+  // Form submit via Web3Forms (gratuito)
+  // CONFIGURAÇÃO: acesse web3forms.com, informe seu e-mail e cole a chave abaixo
+  const W3F_KEY = 'SUA_CHAVE_WEB3FORMS_AQUI';
   const form = document.getElementById('contactForm');
   if (form) {
     form.addEventListener('submit', async (e) => {
@@ -102,9 +102,12 @@
       btn.disabled = true;
       btn.innerHTML = 'Enviando...';
       try {
-        const res = await fetch(FORMSPREE, {
+        const data = new FormData(form);
+        data.append('access_key', W3F_KEY);
+        data.append('subject', 'Novo contato via site – Tellife');
+        const res = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
-          body: new FormData(form),
+          body: data,
           headers: { 'Accept': 'application/json' }
         });
         if (!res.ok) throw new Error();
@@ -113,7 +116,6 @@
         form.reset();
         setTimeout(() => { btn.innerHTML = original; btn.style.background = ''; btn.disabled = false; }, 3000);
       } catch {
-        // fallback: abre e-mail no cliente de e-mail
         const nome = form.querySelector('#nome')?.value || '';
         const mensagem = form.querySelector('#mensagem')?.value || '';
         const email = form.querySelector('#email')?.value || '';
