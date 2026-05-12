@@ -98,7 +98,7 @@
   })();
 
   // Contact form — web3forms.com (free)
-  const W3F_KEY = 'SUA_CHAVE_WEB3FORMS_AQUI';
+  const W3F_KEY = 'e418049e-959c-4f57-93fb-a6a02debc7dd';
   const form = document.getElementById('contactForm');
   if (form) {
     form.addEventListener('submit', async (e) => {
