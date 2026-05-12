@@ -4,15 +4,17 @@
   const _anchors = {};
   const _sections = {};
   _spyIds.forEach(id => {
-    const a = document.querySelector(`.nav-links a[href="#${id}"]`);
+    const a = document.querySelector(`.nav-links a[data-tab="${id}"]`);
     const s = document.getElementById(id);
     if (a) _anchors[id] = a;
     if (s) _sections[id] = s;
   });
   let _activeId = '';
+  let _tabMode = false;
 
   function onScroll() {
     nav.classList.toggle('scrolled', window.scrollY > 20);
+    if (_tabMode) return;
     const y = window.scrollY + 120;
     let current = '';
     _spyIds.forEach(id => {
@@ -28,6 +30,36 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
+  // Tab switching
+  (function () {
+    const allSections = document.querySelectorAll('[data-section]');
+    const tabLinks    = document.querySelectorAll('[data-tab]');
+
+    function showTab(tab) {
+      _tabMode = tab !== 'inicio';
+      if (tab === 'inicio') {
+        allSections.forEach(s => { s.style.display = ''; });
+      } else {
+        allSections.forEach(s => {
+          s.style.display = s.dataset.section === tab ? '' : 'none';
+        });
+      }
+      tabLinks.forEach(a => a.classList.toggle('nav-active', a.dataset.tab === tab));
+      if (_tabMode) _activeId = '';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    tabLinks.forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        showTab(a.dataset.tab);
+        // fecha menu mobile se aberto
+        document.getElementById('mobileToggle')?.classList.remove('open');
+        document.getElementById('navLinks')?.classList.remove('open');
+      });
+    });
+  })();
+
   // Mobile menu
   const toggle = document.getElementById('mobileToggle');
   const links = document.getElementById('navLinks');
@@ -35,7 +67,7 @@
     toggle.classList.toggle('open');
     links.classList.toggle('open');
   });
-  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  links.querySelectorAll('a:not([data-tab])').forEach(a => a.addEventListener('click', () => {
     toggle.classList.remove('open');
     links.classList.remove('open');
   }));
