@@ -2012,3 +2012,87 @@
   .article-hero { padding: 56px 0 48px; }
   .article-content { font-size: 16px; }
 }
+
+/* ── CATÁLOGO PREVIEW ─────────────────────────────── */
+.catalog-preview { padding: 80px 0; background: var(--white); }
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  margin-top: 48px;
+}
+.catalog-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 28px 16px;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-100);
+  border-radius: 14px;
+  text-decoration: none;
+  color: var(--navy-900);
+  font-weight: 600;
+  font-size: 14px;
+  transition: all .22s;
+}
+.catalog-item:hover {
+  background: var(--navy-900);
+  color: white;
+  border-color: var(--navy-900);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(10,37,64,.13);
+}
+.catalog-icon {
+  width: 52px; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--navy-900);
+  color: white;
+  border-radius: 12px;
+  transition: background .22s;
+}
+.catalog-item:hover .catalog-icon { background: rgba(255,255,255,.15); }
+.catalog-icon svg { width: 24px; height: 24px; }
+@media (max-width: 900px) { .catalog-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 500px) { .catalog-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* ── REFERÊNCIAS PREVIEW ──────────────────────────── */
+.refs-preview { padding: 80px 0; background: var(--navy-900); }
+.refs-preview .section-num { color: var(--accent-dim); }
+.refs-preview .section-title { color: white; }
+.refs-preview .section-title em { color: var(--accent); font-style: normal; }
+.refs-preview p { color: var(--gray-300); }
+.refs-highlights {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+.ref-stat {
+  text-align: center;
+  padding: 32px 20px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px;
+}
+.ref-num {
+  font-family: var(--font-head);
+  font-size: 48px;
+  font-weight: 800;
+  color: white;
+  line-height: 1;
+}
+.ref-num span {
+  font-size: 22px;
+  color: var(--accent);
+  margin-left: 2px;
+}
+.ref-label {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--gray-400);
+  font-weight: 500;
+}
+@media (max-width: 900px) { .refs-highlights { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 500px) { .refs-highlights { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .ref-num { font-size: 36px; } }
