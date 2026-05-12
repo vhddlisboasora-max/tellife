@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a2540"/>
+      <stop offset="100%" style="stop-color:#0f3460"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2563eb"/>
+      <stop offset="100%" style="stop-color:#60a5fa"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <!-- Decorative circles -->
+  <circle cx="980" cy="120" r="180" fill="#2563eb" opacity="0.12"/>
+  <circle cx="1080" cy="520" r="120" fill="#60a5fa" opacity="0.08"/>
+  <circle cx="150" cy="500" r="200" fill="#2563eb" opacity="0.06"/>
+  <!-- Logo icon -->
+  <rect x="80" y="80" width="90" height="90" rx="18" fill="#0a2540" stroke="#2563eb" stroke-width="2"/>
+  <circle cx="148" cy="104" r="14" fill="#2563eb"/>
+  <circle cx="125" cy="118" r="10" fill="#60a5fa"/>
+  <text x="115" y="158" font-family="Arial Black, sans-serif" font-weight="900" font-size="30" fill="#ffffff">TL</text>
+  <!-- Company name -->
+  <text x="80" y="240" font-family="Arial, sans-serif" font-weight="700" font-size="72" fill="#ffffff" letter-spacing="-1">Tellife Telecom</text>
+  <!-- Accent line -->
+  <rect x="80" y="268" width="200" height="5" rx="3" fill="url(#accent)"/>
+  <!-- Tagline -->
+  <text x="80" y="330" font-family="Arial, sans-serif" font-weight="400" font-size="32" fill="#93c5fd">Segurança Eletrônica &amp; Infraestrutura de Redes</text>
+  <!-- Stats -->
+  <text x="80" y="420" font-family="Arial, sans-serif" font-weight="700" font-size="48" fill="#2563eb">+17 anos</text>
+  <text x="80" y="460" font-family="Arial, sans-serif" font-weight="400" font-size="22" fill="#94a3b8">de experiência</text>
+  <text x="380" y="420" font-family="Arial, sans-serif" font-weight="700" font-size="48" fill="#2563eb">+500</text>
+  <text x="380" y="460" font-family="Arial, sans-serif" font-weight="400" font-size="22" fill="#94a3b8">projetos entregues</text>
+  <text x="640" y="420" font-family="Arial, sans-serif" font-weight="700" font-size="48" fill="#2563eb">Sul de MG</text>
+  <text x="640" y="460" font-family="Arial, sans-serif" font-weight="400" font-size="22" fill="#94a3b8">e todo o Brasil</text>
+  <!-- Domain -->
+  <text x="80" y="570" font-family="Arial, sans-serif" font-weight="400" font-size="22" fill="#475569">tellife.vercel.app</text>
+</svg>
