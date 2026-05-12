@@ -4,6 +4,30 @@
     nav.classList.toggle('scrolled', window.scrollY > 20);
   });
 
+  // Scroll spy — highlight active nav link
+  (function () {
+    const sectionIds = ['servicos','catalogo','sobre','cobertura','blog','referencias','contato'];
+    const navAnchors = {};
+    sectionIds.forEach(id => {
+      const el = document.querySelector(`.nav-links a[href="#${id}"]`);
+      if (el) navAnchors[id] = el;
+    });
+
+    function setActive() {
+      const scrollY = window.scrollY + 120;
+      let current = '';
+      sectionIds.forEach(id => {
+        const sec = document.getElementById(id);
+        if (sec && sec.offsetTop <= scrollY) current = id;
+      });
+      Object.values(navAnchors).forEach(a => a.classList.remove('nav-active'));
+      if (current && navAnchors[current]) navAnchors[current].classList.add('nav-active');
+    }
+
+    window.addEventListener('scroll', setActive, { passive: true });
+    setActive();
+  })();
+
   // Mobile menu
   const toggle = document.getElementById('mobileToggle');
   const links = document.getElementById('navLinks');

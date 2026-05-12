@@ -124,6 +124,8 @@
     transition: width .25s;
   }
   .nav-links a:hover::after { width: 100%; }
+  .nav-links a.nav-active { color: var(--accent-dim); font-weight: 600; }
+  .nav-links a.nav-active::after { width: 100%; }
 
   .btn {
     display: inline-flex;
