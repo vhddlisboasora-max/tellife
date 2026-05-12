@@ -51,20 +51,76 @@
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-  // Form submit (demo)
+  // Animated counters
+  (function () {
+    const counters = document.querySelectorAll('.counter');
+    if (!counters.length) return;
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = +el.dataset.target;
+        const prefix = el.dataset.prefix || '';
+        const duration = 1800;
+        const start = performance.now();
+        (function step(now) {
+          const p = Math.min((now - start) / duration, 1);
+          const ease = 1 - Math.pow(1 - p, 3);
+          el.textContent = prefix + Math.floor(ease * target);
+          if (p < 1) requestAnimationFrame(step);
+          else el.textContent = prefix + target;
+        })(start);
+        obs.unobserve(el);
+      });
+    }, { threshold: 0.6 });
+    counters.forEach(c => obs.observe(c));
+  })();
+
+  // LGPD banner
+  (function () {
+    const banner = document.getElementById('lgpdBanner');
+    if (!banner || localStorage.getItem('lgpd')) return;
+    setTimeout(() => banner.classList.add('show'), 1800);
+    document.getElementById('lgpdAccept').addEventListener('click', () => {
+      localStorage.setItem('lgpd', '1');
+      banner.classList.remove('show');
+    });
+    document.getElementById('lgpdDecline').addEventListener('click', () => {
+      banner.classList.remove('show');
+    });
+  })();
+
+  // Form submit via Formspree
+  // CONFIGURAÇÃO: crie uma conta em formspree.io, crie um formulário e cole o endpoint abaixo
+  const FORMSPREE = 'https://formspree.io/f/SEU_ID_AQUI';
   const form = document.getElementById('contactForm');
   if (form) {
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const btn = form.querySelector('button');
+      const btn = form.querySelector('button[type="submit"]');
       const original = btn.innerHTML;
-      btn.innerHTML = '✓ Mensagem enviada!';
-      btn.style.background = 'var(--success)';
-      setTimeout(() => {
+      btn.disabled = true;
+      btn.innerHTML = 'Enviando...';
+      try {
+        const res = await fetch(FORMSPREE, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (!res.ok) throw new Error();
+        btn.innerHTML = '✓ Mensagem enviada!';
+        btn.style.background = 'var(--success)';
         form.reset();
+        setTimeout(() => { btn.innerHTML = original; btn.style.background = ''; btn.disabled = false; }, 3000);
+      } catch {
+        // fallback: abre e-mail no cliente de e-mail
+        const nome = form.querySelector('#nome')?.value || '';
+        const mensagem = form.querySelector('#mensagem')?.value || '';
+        const email = form.querySelector('#email')?.value || '';
+        window.location.href = `mailto:administrativo@tellife.com?subject=${encodeURIComponent('Contato via site – ' + nome)}&body=${encodeURIComponent(mensagem + '\n\nTelefone/WhatsApp: ' + form.querySelector('#telefone')?.value + '\nE-mail: ' + email)}`;
         btn.innerHTML = original;
-        btn.style.background = '';
-      }, 2800);
+        btn.disabled = false;
+      }
     });
   }
   // Catalog filters
