@@ -2189,7 +2189,7 @@ section[id] { scroll-margin-top: 88px; }
   color: var(--navy-900);
   font-weight: 600;
   font-size: 14px;
-  transition: all .22s;
+  transition: background .22s, color .22s, border-color .22s, transform .22s, box-shadow .22s;
 }
 .catalog-item:hover {
   background: var(--navy-900);

@@ -1,32 +1,32 @@
-﻿// Navbar shadow on scroll
+// Navbar shadow + scroll spy — single passive listener
   const nav = document.getElementById('nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 20);
+  const _spyIds = ['servicos','catalogo','sobre','cobertura','blog','referencias','contato'];
+  const _anchors = {};
+  const _sections = {};
+  _spyIds.forEach(id => {
+    const a = document.querySelector(`.nav-links a[href="#${id}"]`);
+    const s = document.getElementById(id);
+    if (a) _anchors[id] = a;
+    if (s) _sections[id] = s;
   });
+  let _activeId = '';
 
-  // Scroll spy — highlight active nav link
-  (function () {
-    const sectionIds = ['servicos','catalogo','sobre','cobertura','blog','referencias','contato'];
-    const navAnchors = {};
-    sectionIds.forEach(id => {
-      const el = document.querySelector(`.nav-links a[href="#${id}"]`);
-      if (el) navAnchors[id] = el;
+  function onScroll() {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+    const y = window.scrollY + 120;
+    let current = '';
+    _spyIds.forEach(id => {
+      if (_sections[id] && _sections[id].offsetTop <= y) current = id;
     });
-
-    function setActive() {
-      const scrollY = window.scrollY + 120;
-      let current = '';
-      sectionIds.forEach(id => {
-        const sec = document.getElementById(id);
-        if (sec && sec.offsetTop <= scrollY) current = id;
-      });
-      Object.values(navAnchors).forEach(a => a.classList.remove('nav-active'));
-      if (current && navAnchors[current]) navAnchors[current].classList.add('nav-active');
+    if (current !== _activeId) {
+      if (_anchors[_activeId]) _anchors[_activeId].classList.remove('nav-active');
+      if (_anchors[current])   _anchors[current].classList.add('nav-active');
+      _activeId = current;
     }
+  }
 
-    window.addEventListener('scroll', setActive, { passive: true });
-    setActive();
-  })();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 
   // Mobile menu
   const toggle = document.getElementById('mobileToggle');
@@ -55,16 +55,16 @@
   (function () {
     const counters = document.querySelectorAll('.counter');
     if (!counters.length) return;
+    const DURATION = 1800;
     const obs = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
         const el = entry.target;
         const target = +el.dataset.target;
         const prefix = el.dataset.prefix || '';
-        const duration = 1800;
         const start = performance.now();
         (function step(now) {
-          const p = Math.min((now - start) / duration, 1);
+          const p = Math.min((now - start) / DURATION, 1);
           const ease = 1 - Math.pow(1 - p, 3);
           el.textContent = prefix + Math.floor(ease * target);
           if (p < 1) requestAnimationFrame(step);
@@ -81,17 +81,23 @@
     const banner = document.getElementById('lgpdBanner');
     if (!banner || localStorage.getItem('lgpd')) return;
     setTimeout(() => banner.classList.add('show'), 1800);
-    document.getElementById('lgpdAccept').addEventListener('click', () => {
+    banner.querySelector('#lgpdAccept').addEventListener('click', () => {
       localStorage.setItem('lgpd', '1');
       banner.classList.remove('show');
     });
-    document.getElementById('lgpdDecline').addEventListener('click', () => {
+    banner.querySelector('#lgpdDecline').addEventListener('click', () => {
       banner.classList.remove('show');
     });
   })();
 
-  // Form submit via Web3Forms (gratuito)
-  // CONFIGURAÇÃO: acesse web3forms.com, informe seu e-mail e cole a chave abaixo
+  // Brands marquee — clone inner once for seamless loop
+  (function () {
+    const inner = document.querySelector('.brands-inner');
+    if (!inner) return;
+    inner.appendChild(inner.cloneNode(true));
+  })();
+
+  // Contact form — web3forms.com (free)
   const W3F_KEY = 'SUA_CHAVE_WEB3FORMS_AQUI';
   const form = document.getElementById('contactForm');
   if (form) {
@@ -116,15 +122,17 @@
         form.reset();
         setTimeout(() => { btn.innerHTML = original; btn.style.background = ''; btn.disabled = false; }, 3000);
       } catch {
-        const nome = form.querySelector('#nome')?.value || '';
+        const nome     = form.querySelector('#nome')?.value     || '';
         const mensagem = form.querySelector('#mensagem')?.value || '';
-        const email = form.querySelector('#email')?.value || '';
-        window.location.href = `mailto:administrativo@tellife.com?subject=${encodeURIComponent('Contato via site – ' + nome)}&body=${encodeURIComponent(mensagem + '\n\nTelefone/WhatsApp: ' + form.querySelector('#telefone')?.value + '\nE-mail: ' + email)}`;
+        const email    = form.querySelector('#email')?.value    || '';
+        const tel      = form.querySelector('#telefone')?.value || '';
+        window.location.href = `mailto:administrativo@tellife.com?subject=${encodeURIComponent('Contato via site – ' + nome)}&body=${encodeURIComponent(mensagem + '\n\nTelefone/WhatsApp: ' + tel + '\nE-mail: ' + email)}`;
         btn.innerHTML = original;
         btn.disabled = false;
       }
     });
   }
+
   // Catalog filters
   const filterBtns = document.querySelectorAll('.filter-btn');
   if (filterBtns.length) {
@@ -171,7 +179,7 @@
     document.addEventListener('keydown', e => { if (e.key === 'Escape') lightbox.classList.remove('open'); });
   }
 
-  // WhatsApp tooltip - show briefly after load
+  // WhatsApp tooltip
   setTimeout(() => {
     const tip = document.getElementById('waTooltip');
     if (tip) {
